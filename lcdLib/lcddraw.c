@@ -48,6 +48,53 @@ void clearScreen(u_int colorBGR)
   fillRectangle(0, 0, screenWidth, screenHeight, colorBGR);
 }
 
+/** Draw a diagonal line from top-left to bottom-right */
+void drawDiagonalLine1(u_int colorBGR) 
+{
+  u_char minDim = (screenWidth < screenHeight) ? screenWidth : screenHeight;
+  for (u_char i = 0; i < minDim; i++) {
+    drawPixel(i, i, colorBGR);
+  }
+}
+
+/** Draw a diagonal line from top-right to bottom-left */
+void drawDiagonalLine2(u_int colorBGR) 
+{
+  u_char minDim = (screenWidth < screenHeight) ? screenWidth : screenHeight;
+  for (u_char i = 0; i < minDim; i++) {
+    drawPixel(screenWidth - 1 - i, i, colorBGR);
+  }
+}
+
+/** Draw a filled right triangle in top-left corner */
+void drawFilledTriangle(u_char size, u_int colorBGR)
+{
+  for (u_char row = 0; row < size; row++) {
+    for (u_char col = 0; col <= row; col++) {
+      drawPixel(col, row, colorBGR);
+    }
+  }
+}
+
+/** Draw outline of a right triangle */
+void drawTriangleOutline(u_char startCol, u_char startRow, u_char size, u_int colorBGR)
+{
+  // Draw horizontal base
+  for (u_char col = 0; col < size; col++) {
+    drawPixel(startCol + col, startRow + size - 1, colorBGR);
+  }
+  
+  // Draw vertical side
+  for (u_char row = 0; row < size; row++) {
+    drawPixel(startCol, startRow + row, colorBGR);
+  }
+  
+  // Draw hypotenuse
+  for (u_char i = 0; i < size; i++) {
+    drawPixel(startCol + i, startRow + size - 1 - i, colorBGR);
+  }
+}
+
 /** 5x7 font - this function draws background pixels
  *  Adapted from RobG's EduKit
  */
